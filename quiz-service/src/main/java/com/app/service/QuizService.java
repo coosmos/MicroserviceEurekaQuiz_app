@@ -16,7 +16,11 @@ public class QuizService {
     private final QuizRepository quizRepository;
     private final QuestionClient questionClient;
 
-    // create quiz
+        // create quiz
+
+    // we do three task -> create a quiz
+    //2. fetch a question using quizId
+    //3. submit a quiz to calulcate score
     public Quiz createQuiz(String title, int num, String category) {
         List<QuestionWrapper> questions = questionClient.getQuestionsForQuiz(num, category);
 
@@ -46,11 +50,8 @@ public class QuizService {
 
         Quiz quiz = quizRepository.findById(quizId)
                 .orElseThrow(() -> new RuntimeException("Quiz not found"));
-
         List<String> questionIds = quiz.getQuestionIds();
-
         int score = 0;
-
         for (int i = 0; i < questionIds.size(); i++) {
             String correctAns = questionClient.getCorrectAnswer(questionIds.get(i));
             if (correctAns.equalsIgnoreCase(userAnswers.get(i))) {

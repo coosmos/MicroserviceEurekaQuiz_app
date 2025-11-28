@@ -7,7 +7,6 @@ public class QuestionWrapper {
 
     private String id;
     private String questionTitle;
-
     private String option1;
     private String option2;
     private String option3;
