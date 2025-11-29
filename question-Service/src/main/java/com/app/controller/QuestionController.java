@@ -29,7 +29,6 @@ public class QuestionController {
         return ResponseEntity.ok(questionService.addQuestion(question).getMessage());
     }
 
-    // generate quiz question wrappers (without correct answers)
     @GetMapping("/generate")
     public ResponseEntity<List<QuestionWrapper>> generateQuiz(
             @RequestParam int num,
@@ -37,7 +36,6 @@ public class QuestionController {
         return ResponseEntity.ok(questionService.getQuestionsForQuiz(num, category));
     }
 
-    // quiz-service needs to check correct answer
     @GetMapping("/correct-answer/{id}")
     public ResponseEntity<String> getCorrectAnswer(@PathVariable String id) {
         return ResponseEntity.ok(questionService.getCorrectAnswer(id));

@@ -23,7 +23,9 @@ public class QuizService {
     //3. submit a quiz to calulcate score
     public Quiz createQuiz(String title, int num, String category) {
         List<QuestionWrapper> questions = questionClient.getQuestionsForQuiz(num, category);
-
+    if(questions==null|| questions.isEmpty()){
+        throw new RuntimeException("ques service down");
+    }
         Quiz quiz = new Quiz();
         quiz.setTitle(title);
 
@@ -45,9 +47,7 @@ public class QuizService {
                 .toList();
     }
 
-    // submit quiz + score calculation
     public int submitQuiz(String quizId, List<String> userAnswers) {
-
         Quiz quiz = quizRepository.findById(quizId)
                 .orElseThrow(() -> new RuntimeException("Quiz not found"));
         List<String> questionIds = quiz.getQuestionIds();
@@ -58,7 +58,6 @@ public class QuizService {
                 score++;
             }
         }
-
         return score;
     }
 }

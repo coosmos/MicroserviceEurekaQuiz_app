@@ -10,29 +10,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("quiz")
+@RequestMapping("/quiz")
 @RequiredArgsConstructor
 public class QuizController {
 
     private final QuizService quizService;
 
-    @PostMapping("create")
-    public ResponseEntity<Quiz> createQuiz(
+    @PostMapping("/create")
+    public ResponseEntity<?> createQuiz(
             @RequestParam String title,
             @RequestParam int num,
             @RequestParam String category
     ) {
-        return ResponseEntity.ok(quizService.createQuiz(title, num, category));
+       try{
+           return ResponseEntity.ok(quizService.createQuiz(title,num,category));
+       }catch(RuntimeException e){
+           return ResponseEntity.status(503).body(e.getMessage());
+       }
     }
 
-    @GetMapping("{quizId}")
+    @GetMapping("/{quizId}")
     public ResponseEntity<List<QuestionWrapper>> getQuiz(@PathVariable String quizId) {
         return ResponseEntity.ok(quizService.getQuizQuestions(quizId));
     }
 
     //on submit display score --TODO
 
-    @PostMapping("submit/{quizId}")
+    @PostMapping("/submit/{quizId}")
     public ResponseEntity<String> submitQuiz(
             @PathVariable String quizId,
             @RequestBody List<String> userAnswers) {
